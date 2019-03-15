@@ -1,4 +1,3 @@
-
 console.log("%cThe Library Created By https://jade.gleeze.com In April.2018 ",
         "font-size:12px;color:red;text-shadow:0px 0px 3px rgba(0,0,0,0.5);border:2px solid red;border-radius:10px;");
 let internalCssElement = document.createElement("style");
@@ -133,6 +132,9 @@ export class SuperElement{//div
             }
         }
     }
+    remove(){
+        removeItself();
+    }
 
     keyframes(str,waitMs=0,aniName=undefined) {//wait for ms and then delete automatically.
         if(aniName === undefined) aniName = this.__uniqueCode("kf");
@@ -159,21 +161,27 @@ export class SuperElement{//div
                 this.dressup( {animation:''}, false );
             };
                 //
-            this.anime.play = (schedulesIndex=0)=>{
+            this.anime.play = (schedulesIndex=0,callback)=>{
                     if(kfn) this.anime.cancel();
                         kfn = this.keyframes( keyInfos[schedulesIndex][0] );//keyFrameName
                     this.dressup({ 
                         animation: kfn+' '+keyInfos[schedulesIndex][1]
                     }, false); 
+                    this.animated('strict').then(()=>{
+                        if(callback) callback();
+                    })
             }
                 //
-            this.anime.back = (schedulesIndex=0)=>{
+            this.anime.back = (schedulesIndex=0,callback)=>{
                     if(kfn) this.anime.cancel();
                         kfn = this.keyframes( keyInfos[schedulesIndex][0] );//keyFrameName
                     this.dressup({ 
                         animation: kfn+' '+keyInfos[schedulesIndex][1],
                         'animation-direction':'reverse'
                     }, false); 
+                    this.animated('strict').then(()=>{
+                        if(callback) callback();
+                    })
             }
 
             return this.anime;
